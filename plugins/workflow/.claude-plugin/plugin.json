@@ -1,0 +1,13 @@
+{
+  "name": "workflow",
+  "version": "0.1.0",
+  "description": "Cross-project working practices for coding agents, starting with the Memory Bank persistent-context pattern.",
+  "author": {
+    "name": "Liam Appleyard"
+  },
+  "keywords": [
+    "workflow",
+    "memory-bank",
+    "context"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "dotnet",
+  "version": "0.1.0",
+  "description": "C#, ASP.NET Core and .NET architecture skills: Clean Architecture, DDD tactical patterns, REST API design, and GoF/SOLID design patterns.",
+  "author": {
+    "name": "Liam Appleyard"
+  },
+  "keywords": [
+    "dotnet",
+    "csharp",
+    "aspnetcore",
+    "architecture",
+    "ddd"
+  ]
+}

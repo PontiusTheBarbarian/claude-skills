@@ -1,0 +1,16 @@
+{
+  "name": "devops",
+  "version": "0.1.0",
+  "description": "Azure Bicep infrastructure, GitHub Actions CI/CD, Docker, Debian administration, and secrets/.gitignore hygiene.",
+  "author": {
+    "name": "Liam Appleyard"
+  },
+  "keywords": [
+    "azure",
+    "bicep",
+    "github-actions",
+    "docker",
+    "ci-cd",
+    "secrets"
+  ]
+}

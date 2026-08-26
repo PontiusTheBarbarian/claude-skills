@@ -1,0 +1,75 @@
+{
+  "name": "claude-skills",
+  "owner": {
+    "name": "Liam Appleyard",
+    "url": "https://github.com/PontiusTheBarbarian"
+  },
+  "metadata": {
+    "description": "Personal marketplace of Claude Code skills and agents.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "dotnet",
+      "source": "./plugins/dotnet",
+      "description": "C#, ASP.NET Core and .NET architecture skills: Clean Architecture, DDD tactical patterns, REST API design, and GoF/SOLID design patterns.",
+      "category": "development",
+      "keywords": [
+        "dotnet",
+        "csharp",
+        "aspnetcore",
+        "architecture",
+        "ddd"
+      ]
+    },
+    {
+      "name": "web-frontend",
+      "source": "./plugins/web-frontend",
+      "description": "Frontend skills for Vue 3, WCAG 2.2 AA accessibility, and Core Web Vitals performance.",
+      "category": "development",
+      "keywords": [
+        "vue",
+        "frontend",
+        "accessibility",
+        "wcag",
+        "performance"
+      ]
+    },
+    {
+      "name": "devops",
+      "source": "./plugins/devops",
+      "description": "Azure Bicep infrastructure, GitHub Actions CI/CD, Docker, Debian administration, and secrets/.gitignore hygiene.",
+      "category": "devops",
+      "keywords": [
+        "azure",
+        "bicep",
+        "github-actions",
+        "docker",
+        "ci-cd",
+        "secrets"
+      ]
+    },
+    {
+      "name": "rust",
+      "source": "./plugins/rust",
+      "description": "Rust coding conventions and application architecture skills, including async design and multi-crate workspaces.",
+      "category": "development",
+      "keywords": [
+        "rust",
+        "architecture",
+        "async"
+      ]
+    },
+    {
+      "name": "workflow",
+      "source": "./plugins/workflow",
+      "description": "Cross-project working practices for coding agents, starting with the Memory Bank persistent-context pattern.",
+      "category": "productivity",
+      "keywords": [
+        "workflow",
+        "memory-bank",
+        "context"
+      ]
+    }
+  ]
+}

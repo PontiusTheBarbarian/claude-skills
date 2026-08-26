@@ -1,0 +1,15 @@
+{
+  "name": "web-frontend",
+  "version": "0.1.0",
+  "description": "Frontend skills for Vue 3, WCAG 2.2 AA accessibility, and Core Web Vitals performance.",
+  "author": {
+    "name": "Liam Appleyard"
+  },
+  "keywords": [
+    "vue",
+    "frontend",
+    "accessibility",
+    "wcag",
+    "performance"
+  ]
+}

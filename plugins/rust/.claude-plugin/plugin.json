@@ -1,0 +1,13 @@
+{
+  "name": "rust",
+  "version": "0.1.0",
+  "description": "Rust coding conventions and application architecture skills, including async design and multi-crate workspaces.",
+  "author": {
+    "name": "Liam Appleyard"
+  },
+  "keywords": [
+    "rust",
+    "architecture",
+    "async"
+  ]
+}
