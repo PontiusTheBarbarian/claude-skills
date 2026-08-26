@@ -102,7 +102,26 @@ with the plugin name (`dotnet-api-audit`, not `api-audit`).
      "description": "One line on what this plugin is for."
    }
    ```
-4. Commit and push, then `/plugin marketplace update claude-skills`.
+4. Bump the plugin's `version` (see below), commit and push, then
+   `/plugin marketplace update claude-skills`.
+
+## Bump the version when you change a plugin
+
+An installed plugin is cached as a **version-pinned snapshot** under
+`~/.claude/plugins/cache/<marketplace>/<plugin>/<version>/`. Updating the
+marketplace refreshes the marketplace clone but does **not** re-fetch an
+installed plugin whose `version` is unchanged - so your edits stay invisible to
+anyone who already has it installed, with no error to tell you why.
+
+Always bump `version` in `plugin.json` when a plugin's contents change. To check
+what a plugin is actually serving:
+
+```
+claude plugin details <plugin>@claude-skills
+```
+
+That prints the resolved version and the full component inventory, which is the
+quickest way to confirm a new command, agent or workflow is really loading.
 
 ## Adding a skill
 
