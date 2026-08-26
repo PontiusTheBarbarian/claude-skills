@@ -10,7 +10,7 @@ A personal [Claude Code](https://claude.com/claude-code) plugin marketplace.
 | [web-frontend](plugins/web-frontend/) | 4 | Frontend skills for Vue 3, WCAG 2.2 AA accessibility, and Core Web Vitals performance. |
 | [devops](plugins/devops/) | 5 | Azure Bicep infrastructure, GitHub Actions CI/CD, Docker, Debian administration, and secrets/.gitignore hygiene. |
 | [rust](plugins/rust/) | 2 | Rust coding conventions and application architecture skills, including async design and multi-crate workspaces. |
-| [workflow](plugins/workflow/) | 1 | Cross-project working practices for coding agents, starting with the Memory Bank persistent-context pattern. |
+| [practices](plugins/practices/) | 1 | Cross-project working practices for coding agents, starting with the Memory Bank persistent-context pattern. |
 
 ## Installation
 
@@ -60,13 +60,27 @@ plugins/
       <agent-name>.md       # a subagent definition
     commands/
       <command-name>.md     # a slash command
+    workflows/
+      <workflow-name>.js    # a Workflow-tool script
 ```
 
-`skills/`, `agents/` and `commands/` are discovered automatically - you do not
-need to list their contents in `plugin.json`.
+All four component directories are discovered automatically. **Do not list them
+in `plugin.json`** - for `commands`, `agents` and `workflows` those manifest keys
+*replace* the default directory rather than adding to it, so declaring
+`"commands": "./commands/"` and then adding a second location silently stops the
+first from loading. Claude Code warns about this as
+`folder-shadowed-by-manifest`. Every one of Anthropic's own reference plugins
+omits the keys entirely.
 
-Skill folder names must be unique across the whole marketplace, not just within
-a plugin, because two plugins can be installed side by side.
+### Naming
+
+Skills, commands and agents are **namespaced per plugin**, so two plugins can
+each define a `review` without conflict - they resolve as `/dotnet:review` and
+`/devops:review`. You do not need marketplace-wide unique names for these.
+
+Workflows are the exception: **workflow names are flat and global**. A collision
+between two installed plugins is a real risk, so always self-prefix `meta.name`
+with the plugin name (`dotnet-api-audit`, not `api-audit`).
 
 ## Adding a plugin
 
@@ -79,7 +93,7 @@ a plugin, because two plugins can be installed side by side.
      "author": { "name": "Liam Appleyard" }
    }
    ```
-2. Add `skills/`, `agents/` or `commands/` folders alongside it.
+2. Add `skills/`, `agents/`, `commands/` or `workflows/` folders alongside it.
 3. Register it in `.claude-plugin/marketplace.json` under `plugins`:
    ```json
    {
@@ -107,3 +121,112 @@ Instructions for Claude go here.
 
 The `description` is what Claude reads to decide whether to load the skill, so
 write it as a *trigger* ("Use when ..."), not as a summary.
+
+## Adding a command
+
+A command is a single markdown file in `commands/`. It becomes
+`/<plugin>:<filename>`. All frontmatter is optional.
+
+```markdown
+---
+description: Short line shown in /help - start with a verb
+argument-hint: [path-or-glob] [--flag]
+allowed-tools: [Read, Glob, Grep]
+---
+
+The user invoked this with: $ARGUMENTS
+
+Instructions for Claude go here.
+```
+
+| Key | Notes |
+|-----|-------|
+| `description` | Shown in `/help`. Defaults to the first line of the body. |
+| `argument-hint` | One bracketed token per argument, in the same order as `$1 $2 $3`. |
+| `allowed-tools` | Pre-approved tools, so the command prompts less. Bash needs a filter: `Bash(git:*)`, never bare `Bash`. |
+| `model` | `haiku` \| `sonnet` \| `opus`. Defaults to inheriting the session model. |
+
+Inside the body you can use `$ARGUMENTS` for the whole raw string, `$1`/`$2` for
+positional arguments, `` !`cmd` `` to inline shell output at expansion time, and
+`${CLAUDE_PLUGIN_ROOT}` for the plugin's own directory.
+
+> Anthropic now treats `commands/*.md` as the legacy layout and prefers a
+> user-invoked skill - `skills/<name>/SKILL.md` carrying the same
+> `argument-hint` and `allowed-tools` frontmatter. Both load identically and both
+> produce a slash command; only the file layout differs. See
+> `plugins/dotnet/commands/review-api.md` for the classic form.
+
+## Adding an agent
+
+An agent is a single markdown file in `agents/`. The body is its system prompt.
+
+```markdown
+---
+name: my-reviewer
+description: |
+  Use this agent when <trigger>. Examples:
+
+  <example>
+  Context: <situation>
+  user: "<what the user says>"
+  assistant: "I'll use the my-reviewer agent to ..."
+  <commentary>Why this agent fits.</commentary>
+  </example>
+tools: Read, Glob, Grep, Bash
+model: inherit
+color: blue
+---
+
+You are ... (second person, this is the agent's system prompt)
+```
+
+| Key | Required | Notes |
+|-----|----------|-------|
+| `name` | yes | kebab-case, 3-50 chars, matches the filename. No underscores. |
+| `description` | yes | The dispatch signal. Use `Use this agent when ... Examples:` plus 2-3 `<example>` blocks - including one *counter*-example showing when NOT to use it. |
+| `tools` | no | Comma-separated string or array. Omit for all tools. |
+| `model` | no | `inherit` \| `haiku` \| `sonnet` \| `opus`. `inherit` is usually right. |
+| `color` | no | `blue` \| `cyan` \| `green` \| `yellow` \| `magenta` \| `red` |
+
+See `plugins/dotnet/agents/dotnet-reviewer.md`.
+
+## Adding a workflow
+
+A workflow is a `.js` file in `workflows/` that orchestrates many subagents
+deterministically. Use one when a job is too big for a single context - a
+solution-wide audit, a migration across dozens of files.
+
+```js
+export const meta = {
+  name: 'myplugin-thing',        // self-prefixed: workflow names are GLOBAL
+  description: 'What it does.',
+  whenToUse: 'When to reach for it, and what args it needs.',
+  phases: [{ title: 'Review' }, { title: 'Verify' }],
+}
+
+const input = typeof args === 'string' && args.trim() ? JSON.parse(args) : (args || {})
+
+const results = await pipeline(
+  input.files,
+  (file) => agent(`Review ${file}`, { phase: 'Review', schema: MY_SCHEMA }),
+  (review, file) => agent(`Verify the findings in ${file}`, { phase: 'Verify' }),
+)
+return { results }
+```
+
+The runtime is **not Node**. Hard constraints on the script body:
+
+- no `import` or `require` - the script cannot pull in anything
+- no `fs`, no `process` - **it cannot read files**; the calling session
+  enumerates paths and passes them in `args`, and the spawned agents do their own
+  I/O via their `Read` tool
+- no `Date.now()`, `new Date()` or `Math.random()` - they break workflow resume
+- `args` is an implicit global, not a parameter, and may arrive as a JSON
+  *string* rather than an object - always guard the parse
+
+Prefer `pipeline()` over `parallel()`: pipeline moves each item through every
+stage independently, so item A can be verifying while item B is still under
+review. Reach for `parallel()` only when a stage genuinely needs every prior
+result at once.
+
+See `plugins/dotnet/workflows/dotnet-api-audit.js`.

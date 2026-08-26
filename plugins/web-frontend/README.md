@@ -4,8 +4,8 @@ Frontend skills for Vue 3, WCAG 2.2 AA accessibility, and Core Web Vitals perfor
 
 ## Skills
 
-| Skill | Description |
-|-------|-------------|
+| Name | Description |
+|------|-------------|
 | [performance-optimisation](skills/performance-optimisation/SKILL.md) | Comprehensive web performance standards based on Core Web Vitals (LCP, INP, CLS), with 50+ anti-patterns, detection regex, framework-specific fixes for modern web frameworks, and modern API guidance. |
 | [vue-component-standards](skills/vue-component-standards/SKILL.md) | Use when creating or reviewing Vue 3 components, composables, or Pinia stores — Composition API with script setup, TypeScript props/emits, folder structure, and state management conventions. Applies to any .vue file or frontend code review. |
 | [web-accessibility-review](skills/web-accessibility-review/SKILL.md) | Use when writing or reviewing any new page, form, or interactive Vue component — WCAG 2.2 AA checklist covering semantic HTML, ARIA, keyboard navigation, focus management, and color contrast. Run this before considering frontend work done, not as an afterthought. |

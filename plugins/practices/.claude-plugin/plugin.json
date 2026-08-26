@@ -1,5 +1,5 @@
 {
-  "name": "workflow",
+  "name": "practices",
   "version": "0.1.0",
   "description": "Cross-project working practices for coding agents, starting with the Memory Bank persistent-context pattern.",
   "author": {

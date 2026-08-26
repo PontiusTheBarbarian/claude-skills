@@ -4,8 +4,8 @@ Azure Bicep infrastructure, GitHub Actions CI/CD, Docker, Debian administration,
 
 ## Skills
 
-| Skill | Description |
-|-------|-------------|
+| Name | Description |
+|------|-------------|
 | [azure-bicep-deploy](skills/azure-bicep-deploy/SKILL.md) | Use when a project needs Azure infrastructure - generate infra/bicep/main.bicep and its modules (App Service, Static Web Apps, Key Vault, monitoring) following this pattern, tailored to the actual project name and environments. Also use when reviewing existing Bicep in infra/bicep/*.bicep. |
 | [debian-linux](skills/debian-linux/SKILL.md) | Guidance for Debian-based Linux administration, apt workflows, and Debian policy conventions. |
 | [docker-development](skills/docker-development/SKILL.md) | Use when writing or reviewing a Dockerfile, .dockerignore, or docker-compose.yml for the API or frontend, or when building/running containers inside this Docker Sandbox (Docker-in-Docker). Generate these files following this pattern rather than copying one from elsewhere in the project. |

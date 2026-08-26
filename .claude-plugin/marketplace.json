@@ -61,12 +61,12 @@
       ]
     },
     {
-      "name": "workflow",
-      "source": "./plugins/workflow",
+      "name": "practices",
+      "source": "./plugins/practices",
       "description": "Cross-project working practices for coding agents, starting with the Memory Bank persistent-context pattern.",
       "category": "productivity",
       "keywords": [
-        "workflow",
+        "practices",
         "memory-bank",
         "context"
       ]
