@@ -1,0 +1,16 @@
+{
+  "name": "tasks",
+  "version": "0.3.0",
+  "description": "Skills for authoring the artifacts work starts from: a deterministic engineering-ticket author with built-in security and scrutiny review passes, and an interactive README author.",
+  "author": {
+    "name": "Liam Appleyard"
+  },
+  "keywords": [
+    "tickets",
+    "stories",
+    "planning",
+    "readme",
+    "documentation",
+    "writing"
+  ]
+}

@@ -1,6 +1,6 @@
 ---
 name: ticket-creator
-description: Interactively create well-formed, deterministic engineering tickets (and optional agent-targeted implementation plans) through a structured interview, cross-repo scope detection, and an independent subagent security review written to a companion file, followed by a second independent subagent scrutiny pass, before writing to a ticketing system MCP or to the current directory. Use this whenever the user wants to "create a ticket," "write up a ticket," "draft a story," "spec out a feature," or asks for a ticket/implementation plan for a piece of work — even if they only give a rough description of what they want built. Always use this skill rather than freehand ticket-writing, since the output format and quality bar are fixed by this skill's templates.
+description: Interactively create well-formed, deterministic engineering tickets (and optional agent-targeted implementation plans) through a structured interview, cross-repo scope detection, an independent subagent security review written to a companion file, an interactive pass that answers or pins an assumption to every risk and unknown, and a second independent subagent scrutiny pass, before writing to a ticketing system MCP or to the current directory. Use this whenever the user wants to "create a ticket," "write up a ticket," "draft a story," "spec out a feature," or asks for a ticket/implementation plan for a piece of work — even if they only give a rough description of what they want built. Always use this skill rather than freehand ticket-writing, since the output format and quality bar are fixed by this skill's templates.
 ---
 
 # Ticket Creator
@@ -11,9 +11,9 @@ Produces tickets that are consistent regardless of which session or model instan
 
 ## The ticket's structure is a closed set
 
-The nine headings in `references/ticket-template.md` are the only headings a ticket may contain. This is the rule most likely to erode under drafting pressure, because adding a heading always feels like adding rigour — a "Background," a "Rollout Plan," an "Alternatives Considered," a `###` breaking up a long section. It isn't. It's process output moved into a document someone has to read before they can start work.
+The eight headings in `references/ticket-template.md` are the only headings a ticket may contain. This is the rule most likely to erode under drafting pressure, because adding a heading always feels like adding rigour — a "Background," a "Rollout Plan," an "Alternatives Considered," a `###` breaking up a long section. It isn't. It's process output moved into a document someone has to read before they can start work.
 
-When you have content that doesn't fit one of the nine, exactly two moves are available:
+When you have content that doesn't fit one of the eight, exactly two moves are available:
 
 1. Fold it into the closest existing section as a sentence or two.
 2. Cut it.
@@ -68,34 +68,59 @@ Its output is a companion file, `SecurityAssessment.md`, written next to the tic
 Two things cross back into the ticket:
 
 - The assessment's Recommended Sign-off line decides the Cyber Security Officer box, replacing the Step 4 marker.
-- A finding the ticket has to act on becomes an acceptance criterion or a Risks / Unknowns bullet, written as the requirement itself. Not a quote from the assessment, and not under a new heading.
+- A finding the ticket has to act on becomes an acceptance criterion or a Risks / Unknowns bullet, written as the requirement itself. Not a quote from the assessment, and not under a new heading. A finding that lands in Risks / Unknowns goes into Step 6 with everything else — it gets answered or it gets an assumption, same as any other unknown.
 
 Everything else stays in the companion file. Don't summarise the assessment in the ticket "for convenience" — that's the section you just removed, growing back.
 
-### Step 6: Validate before scrutiny
+### Step 6: Resolve the risks and unknowns with the user
 
-Read `references/validation-checklist.md` and work through it against the draft. It checks structure only — the nine required sections present and in order, no unlisted headings, no placeholder text, companion files where they should be.
+You now have a Risks / Unknowns list from Step 4, plus anything Step 5 added. Most of it is resolvable, and resolving it is cheaper here than after someone has started the work. Put every item to the user and settle it one way or the other.
+
+**Check what you can check first.** An unknown you can answer by reading the repo — which library version is in use, whether an endpoint already exists, what the current retry limit is — is not a question for the user. Run the check, fold the answer in, and never raise it. Asking the user something you could have grepped is how an interview loses their patience for the questions that actually need them.
+
+**Then ask, one question per unknown.** Batch up to four per prompt so a long list doesn't turn into a long interrogation, but never merge two unknowns into one question — a single answer covering both resolves neither cleanly. Where the plausible answers are enumerable, offer them as options rather than leaving it open; "which of these three" is faster to answer than "what should happen here?" and produces a sharper answer.
+
+Each item ends in exactly one of three states:
+
+- **Answered.** Delete the bullet and fold the answer into the section it belongs in — an acceptance criterion, a sentence in Description, a line of Technical Instructions. The bullet does not stay with the answer appended to it: a resolved question sitting in a risk list still reads to the next person as a reason to hesitate.
+- **Answered, and it changes the scope.** Say so explicitly rather than quietly absorbing it, then update the Acceptance Criteria and anything downstream of them, including the implementation plan.
+- **Nobody can answer it today.** The bullet stays, and you write the assumption with the user rather than for them: "if this can't be settled now, what should the ticket assume?" Record it on the bullet as `**Assumption:** ...`. An unknown with an assumption lets work start; an unknown without one stops the reader and sends them looking for someone.
+
+One pass, not a negotiation. Don't re-open an answer you already have, and don't manufacture unknowns so the step has something to do — if drafting genuinely produced none, say that to the user and move on. Where the ticket had no real unknowns, Risks / Unknowns says "N/A" with a reason, and that's a legitimate outcome rather than a gap.
+
+Finish by re-rating confidence at the bottom of the section. Answers should push it up; assumptions you had to write should push it down.
+
+### Step 7: Validate before scrutiny
+
+Read `references/validation-checklist.md` and work through it against the draft. It checks structure only — the eight required sections present and in order, no unlisted headings, no placeholder text, an assumption on every surviving unknown, companion files where they should be.
 
 Three rules make this worth doing rather than a formality:
 
 - **Quote your evidence.** The checklist requires the line from the ticket that satisfies each item. An item you can't quote is failing. Reading the ticket and forming an impression that it looks complete is the failure mode this step exists to prevent — you drafted it, so you already believe it's fine.
-- **Enumerate the headings, don't scan for odd ones.** Grep every heading in the file and compare the result against the list of nine. A heading that looks like it belongs is exactly the one a scan misses.
-- **Fix before proceeding.** Any failing item gets fixed and re-checked now. Don't pass a draft with known gaps to Step 7; the scrutiny subagent's value is in finding what you *didn't* already know about.
+- **Enumerate the headings, don't scan for odd ones.** Grep every heading in the file and compare the result against the list of eight. A heading that looks like it belongs is exactly the one a scan misses.
+- **Fix before proceeding.** Any failing item gets fixed and re-checked now. Don't pass a draft with known gaps to Step 8; the scrutiny subagent's value is in finding what you *didn't* already know about.
 
-This is a self-check and can't be more than that — it's the same session that wrote the ticket. It is not a substitute for the scrutiny pass in Step 7, which is independent by design for exactly that reason.
+This is a self-check and can't be more than that — it's the same session that wrote the ticket. It is not a substitute for the scrutiny pass in Step 8, which is independent by design for exactly that reason.
 
-### Step 7: Scrutiny pass (independent subagent)
+### Step 8: Scrutiny pass (independent subagent)
 
 Spawn a subagent using `agents/scrutiny-reviewer.md` — adapted from [obra/superpowers](https://github.com/obra/superpowers)' task-reviewer pattern — giving it the drafted ticket, the implementation plan (if present), `SecurityAssessment.md`, and the original ask from Step 2. The subagent should have no access to your reasoning about *why* you made choices — only the artifacts themselves — so it's actually evaluating the ticket as written, not rubber-stamping your intent. It treats any rationale embedded in the ticket the same way: as an unverified claim, not evidence the choice was correct.
 
-Append its findings to the ticket under **Scrutiny** using the fixed format in `references/ticket-template.md`. If the subagent flags Critical or Important issues, fix them and note what changed; don't just append criticism you didn't act on. Minor findings can be noted without necessarily being actioned.
+**The review leaves no artifact — not a ticket section, not a companion file.** Act on it instead:
 
-### Step 8: Deliver
+- Critical and Important findings get fixed in the ticket, and the fix is the record that the review happened.
+- A finding you're deliberately not fixing becomes ordinary ticket content under an existing heading — usually a Risks / Unknowns bullet with its assumption — written as the risk itself, not as "the reviewer said X."
+- Minor findings are yours to judge. Fix the cheap ones, drop the rest.
+- If a fix opens a new unknown, settle it the way Step 6 does: ask the user, or write the assumption.
+
+Report what it found to the user in the terminal at Step 9 and nowhere else. A Scrutiny section listing what a reviewer objected to and how you answered is process output; the person picking this ticket up needs the corrected ticket, not the correction history.
+
+### Step 9: Deliver
 
 - **Local files:** they're already in the current working directory — `Ticket.md`, `SecurityAssessment.md`, and `ImplementationPlan.md` if one was requested. Don't create a subdirectory for them, and don't move them somewhere tidier unless the user asks.
 - **Ticketing MCP:** create the ticket via that tool from `Ticket.md`, then attach or link the implementation plan and the security assessment (as a comment, attachment, or linked doc depending on what the tool supports). Leave the local files in place as well.
 
-Tell the user where it ended up and summarize the cross-repo outcome, security assessment outcome, and any scrutiny findings in a few lines — don't just say "done."
+Tell the user where it ended up and summarize, in a line or two each: the cross-repo outcome, the security assessment outcome, which unknowns got answered in Step 6 and which are standing on an assumption, and what the scrutiny pass found and what you did about it. Don't just say "done."
 
 ## Iterating on this skill
 

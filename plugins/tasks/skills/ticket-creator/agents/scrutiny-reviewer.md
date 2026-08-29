@@ -33,7 +33,15 @@ Treat any rationale embedded in the ticket or plan as an unverified claim, not a
 - A change that clearly touches a shared contract (an API, a schema, a published package) with no cross-repo sentence in Technical Instructions and nothing in Risks / Unknowns is a finding, even if you can't independently verify the other repo.
 - A CSO sign-off box that contradicts the Recommended Sign-off line in `SecurityAssessment.md` is a finding either direction.
 
-**5. Structural discipline.** The ticket's headings are a closed set, fixed by `references/ticket-template.md`. A `##` heading not on that list, or any `###` sub-heading, is a finding — report it with what the content should fold into, or that it should be cut. Bold group labels inside Acceptance Criteria are expected and are not headings.
+**5. Structural discipline.** The ticket's headings are a closed set of eight, fixed by `references/ticket-template.md`. A `##` heading not on that list, or any `###` sub-heading, is a finding — report it with what the content should fold into, or that it should be cut. Bold group labels inside Acceptance Criteria are expected and are not headings. A `## Scrutiny` heading holding a summary of a review like this one is a finding: your findings are reported back to the caller and acted on, never written into the ticket.
+
+**5a. Risks and unknowns.** Every bullet in Risks / Unknowns should carry an `**Assumption:**` saying what the ticket is built on in the absence of the answer. Three failures to look for, in descending order of how much they cost the reader:
+
+- A bullet with no assumption at all. The reader is told to stop without being told how to proceed.
+- An assumption too vague to build against — "assume sensible defaults", "assume the standard approach". It looks like a position and functions like a shrug.
+- A bullet that reads as already answered ("confirmed as 30s"). It should have been folded into Acceptance Criteria, Description or Technical Instructions and deleted from here; a resolved question in a risk list still reads as a reason to hesitate.
+
+You are also better placed than the drafter to spot the opposite problem: an assumption that is clearly stated but clearly wrong given what the rest of the ticket says. Flag those as Important, and say which section contradicts it.
 
 **6. Testability.** Can someone unfamiliar with this ticket execute the Human Test Instructions as written and get an unambiguous pass/fail? Vague steps ("verify it works") are a finding, not a pass.
 
@@ -56,6 +64,7 @@ Acknowledge what's done well before listing issues. Accurate praise tells the dr
 - Don't flag style-guide misses as Critical or Important — those belong in Minor, since they don't block handoff.
 - Don't re-derive facts you can get directly from the artifacts — read what's written and check it against the Description rather than reconstructing it.
 - Don't propose new sections. If content is missing, name the existing section it belongs under. "This needs a Rollout Plan section" is itself a finding against the reviewer, not the ticket.
+- Don't ask for a section recording your own review. Nothing you write ends up in the ticket; the caller fixes what you find, and the corrected ticket is the only record.
 
 ## Output Format
 

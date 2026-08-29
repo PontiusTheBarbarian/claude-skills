@@ -12,7 +12,7 @@ heading. Fold them in or cut them.
 
 Every heading below is always present. A section with nothing to say keeps its
 heading and says "N/A" plus a one-line reason, so it reads as considered rather
-than forgotten. Nine sections, every time — no more, no fewer.
+than forgotten. Eight sections, every time — no more, no fewer.
 
 ```markdown
 # [Ticket Title]
@@ -41,7 +41,7 @@ A walkthrough of every scenario a human needs to manually verify to confirm the 
    **Expected result**: ...
 
 ## Risks / Unknowns
-- What we need to be aware of, and what wasn't confirmed with high confidence.
+- [An unknown nobody could answer during drafting.] **Assumption:** [what the ticket is written to assume in the meantime, so work can start without the answer.]
 - End with an overall confidence rating: **High / Medium / Low**, with a one-line reason for the rating.
 
 ## Technical Instructions
@@ -59,14 +59,6 @@ A lightweight, human-readable summary of the technical approach. Concise, light 
 - [ ] Designer
 - [ ] Cyber Security Officer (CSO)
 (Check all that apply, with a one-line reason why each checked role needs to review.)
-
-## Scrutiny
-[Filled in after the independent subagent review — see agents/scrutiny-reviewer.md. Format:]
-
-**Findings:**
-- [Issue raised] → [Resolution: fixed / acknowledged as acceptable risk, with reasoning]
-
-**Unresolved concerns (if any):** ...
 ```
 
 ## Section rules
@@ -94,6 +86,36 @@ exactly the `##` headings listed above.
 - A single group is fine when all the criteria belong to one area — still label
   it rather than dropping to a bare list.
 
+### Risks / Unknowns
+
+Everything here has already been put to the user one item at a time (`SKILL.md`
+Step 6) and survived it. That resolution pass is what makes this section short,
+and it changes what a bullet means: not "something the drafter wasn't sure
+about" but "something nobody could answer today."
+
+- **An answered unknown is not a risk.** When the user answers one, the answer
+  goes into the section it actually belongs in — an acceptance criterion, a
+  sentence in Description, a line of Technical Instructions — and the bullet is
+  deleted. Don't keep the bullet with the answer appended to it; a resolved
+  question left in a risk list still reads as a reason to hesitate.
+- **Every surviving bullet states its assumption**, on the same bullet, in the
+  form `**Assumption:** ...`. This is the whole point of the section. An unknown
+  with no assumption tells the reader to stop and go find someone; an unknown
+  with one tells them how to proceed and what to re-check if it turns out wrong.
+  A bullet you can't write an assumption for is a bullet that should have
+  blocked the ticket instead of shipping in it.
+- **Two things belong here that don't come from the resolution pass**: a
+  cross-repo coupling whose far side couldn't be verified
+  (`references/scope-detection.md`), and a security finding the ticket has to
+  carry rather than fix (`SKILL.md` Step 5). Both still take an assumption.
+- **"N/A — every unknown raised was resolved during drafting" is a real and
+  common outcome**, not a section you failed to fill. It still carries the
+  confidence rating.
+
+The confidence rating is about the ticket, not the work: how confident you are
+that building exactly what's written here produces what was asked for. Standing
+assumptions push it down even when each one is individually reasonable.
+
 ### Technical Instructions
 
 If the work touches more than one repository or independently-deployed package,
@@ -106,12 +128,19 @@ write nothing about scope at all.
 If a genuine cross-repo dependency couldn't be confirmed, that belongs in
 Risks / Unknowns as an unknown, not here as a hedged sentence.
 
-### Companion files
+### Companion files, and what leaves no trace
 
 The security assessment is **not** a ticket section. It's written to
 `SecurityAssessment.md` next to the ticket (see `SKILL.md` Step 5). Its outcome
 still drives whether the CSO box is checked under Review / Sign-off, but its
 content stays out of the ticket body.
+
+The scrutiny review (`SKILL.md` Step 8) leaves no artifact at all — no section,
+no file. Its Critical and Important findings are fixed in the ticket, so the
+evidence that it ran is that the ticket is better; its findings are reported to
+the user in the terminal and nowhere else. A "Scrutiny" heading listing what a
+reviewer said and how the drafter answered is process output, and the reader
+starting this work needs the corrected ticket, not the correction history.
 
 ## Notes on filling this in
 

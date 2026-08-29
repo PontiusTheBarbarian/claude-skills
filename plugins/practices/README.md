@@ -9,8 +9,7 @@ Cross-project working practices for coding agents, starting with the Memory Bank
 | [memory-bank](skills/memory-bank/SKILL.md) | Memory Bank pattern: persistent project documentation under a memory-bank/ folder so the AI can resume context across sessions. |
 
 > Looking for `readme-creator`? It now lives in the
-> [documentation](../documentation/) plugin - install
-> `documentation@claude-skills` to get it.
+> [tasks](../tasks/) plugin - install `tasks@claude-skills` to get it.
 
 ## Install
 

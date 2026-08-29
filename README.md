@@ -11,7 +11,7 @@ A personal [Claude Code](https://claude.com/claude-code) plugin marketplace.
 | [devops](plugins/devops/) | 5 | Azure Bicep infrastructure, GitHub Actions CI/CD, Docker, Debian administration, and secrets/.gitignore hygiene. |
 | [rust](plugins/rust/) | 2 | Rust coding conventions and application architecture skills, including async design and multi-crate workspaces. |
 | [practices](plugins/practices/) | 1 | Cross-project working practices for coding agents, starting with the Memory Bank persistent-context pattern. |
-| [documentation](plugins/documentation/) | 2 | Project documentation skills: an interactive README author, and a deterministic engineering-ticket author with built-in security and scrutiny review passes. |
+| [tasks](plugins/tasks/) | 2 | Ticket and documentation authoring: a deterministic engineering-ticket author with built-in security and scrutiny review passes, and an interactive README author. |
 
 ## Installation
 
@@ -31,7 +31,7 @@ A personal [Claude Code](https://claude.com/claude-code) plugin marketplace.
    /plugin install devops@claude-skills
    /plugin install rust@claude-skills
    /plugin install practices@claude-skills
-   /plugin install documentation@claude-skills
+   /plugin install tasks@claude-skills
    ```
 4. Restart Claude Code so the plugin loads.
 5. Check what you got:
@@ -151,7 +151,7 @@ write it as a *trigger* ("Use when ..."), not as a summary.
 
 `SKILL.md` is loaded in full whenever the skill triggers, so keep it to the
 workflow and push the detail into sibling folders that it reads at the point of
-need. `plugins/documentation/skills/ticket-creator/` uses three of these:
+need. `plugins/tasks/skills/ticket-creator/` uses three of these:
 
 | Folder | For |
 |--------|-----|

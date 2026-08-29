@@ -1,9 +1,10 @@
 # Validation Checklist
 
-A structural check of the drafted ticket, run as Step 6 — after the security
-assessment is written, before the scrutiny subagent sees it. It catches
-mechanical gaps (missing sections, headings that shouldn't exist, leftover
-placeholders) so Step 7 can spend its attention on substance.
+A structural check of the drafted ticket, run as Step 7 — after the risks and
+unknowns have been through the resolution pass, before the scrutiny subagent
+sees it. It catches mechanical gaps (missing sections, headings that shouldn't
+exist, leftover placeholders, an unknown with no assumption attached) so Step 8
+can spend its attention on substance.
 
 **This is a self-check, and self-checks fail by asserting rather than
 verifying.** So the rule for every item below is the same: *quote the line from
@@ -19,11 +20,12 @@ PASS  ## Acceptance Criteria      → line 24
 FAIL  ## Human Test Instructions  → not found
 FAIL  unlisted heading            → line 58: "## Rollout Plan"
 FAIL  placeholder "TBD"           → line 31: "Retry limit: TBD"
+FAIL  unknown with no assumption  → line 44: "Unclear whether refunds are in scope."
 ```
 
 ## 1. Required sections
 
-All nine must be present as `##` headings, with the exact wording below, in this
+All eight must be present as `##` headings, with the exact wording below, in this
 order. A section that is genuinely not applicable keeps its heading and says
 "N/A" plus a reason — a missing heading is a failure even when the section would
 have been empty.
@@ -36,7 +38,6 @@ have been empty.
 - [ ] `## Technical Instructions`
 - [ ] `## Documentation Requirements`
 - [ ] `## Review / Sign-off Required`
-- [ ] `## Scrutiny`
 
 Check the order too, not just presence: if a heading appears out of sequence,
 that's a failure — `references/ticket-template.md` fixes the order.
@@ -50,15 +51,18 @@ it — don't scan for ones that look out of place, enumerate:
 grep -n "^#\{1,6\} " Ticket.md
 ```
 
-- [ ] Exactly one `#` heading (the title) and exactly the nine `##` headings
+- [ ] Exactly one `#` heading (the title) and exactly the eight `##` headings
       above. Any other `##` heading is a failure.
 - [ ] **Zero `###` or deeper headings anywhere in the ticket.** Sub-headings are
       the most common way an extra section sneaks in past a check that only
       looks at `##`.
 - [ ] No section that was removed from the template reappears under any name:
-      `Cross-Repo Scope`, `Security Assessment`, `Skills Required`. These have
-      homes elsewhere now (a sentence in Technical Instructions,
-      `SecurityAssessment.md`, and nowhere respectively).
+      `Cross-Repo Scope`, `Security Assessment`, `Scrutiny`, `Skills Required`.
+      These have homes elsewhere now (a sentence in Technical Instructions,
+      `SecurityAssessment.md`, the corrected ticket itself, and nowhere,
+      respectively). `Scrutiny` is the one to watch: the review runs, so a
+      heading for its findings feels owed. It isn't — the fixes are the
+      output.
 
 On a hit, the fix is one of two things, and "leave it, it's useful context" is
 not among them: fold the content into the closest listed section as a sentence
@@ -83,6 +87,16 @@ headings and are expected — don't flag them.
       detection found genuine cross-repo work, and then in one sentence with no
       evidence, verdict, or check list attached. Scope commentary on a
       single-repo change is a failure.
+- [ ] **Risks / Unknowns** — every bullet except the closing confidence line
+      carries an `**Assumption:**`. Quote each bullet in full. A bullet without
+      one either never went through the Step 6 resolution pass or came out of it
+      unsettled; both are failures, and the fix is to go back and settle it with
+      the user, not to invent an assumption on their behalf here.
+- [ ] **Risks / Unknowns** holds no bullet that was answered during Step 6. An
+      answer folded into the bullet ("Unknown: which timeout applies — confirmed
+      as 30s") is a failure: the bullet should be gone and the answer should be
+      in Acceptance Criteria, Description or Technical Instructions. Quote where
+      each Step 6 answer ended up.
 
 ## 4. No placeholder text
 
@@ -93,7 +107,8 @@ for any hit.
 - [ ] `[Ticket Title]`
 - [ ] `[role]`, `[capability]`, `[benefit]`
 - [ ] `[Group label]`
-- [ ] `[Filled in after ...]`, `[Criterion ...]`
+- [ ] `[Criterion ...]`, `[An unknown ...]`, `[what the ticket is written to
+      assume ...]`
 - [ ] `Pending — completed in Step 5` (the Step 4 marker; Review / Sign-off
       should hold a real answer by now)
 
@@ -109,7 +124,13 @@ information for the reader is a placeholder even if it isn't on this list.
       this ticket. `**Requirements**` or `**Other**` is a failure — it's a label
       that would fit any ticket, which means it isn't grouping anything.
 - [ ] **Risks / Unknowns** ends with a `**High / Medium / Low**` confidence
-      rating and a one-line reason.
+      rating and a one-line reason, and the rating reflects the assumptions
+      above it. Several standing assumptions with a High rating is a failure —
+      the rating is about confidence that building what's written produces what
+      was asked for.
+- [ ] Each stated assumption is specific enough to build against. "Assume
+      sensible defaults" is not an assumption; "assume the existing 30s gateway
+      timeout applies" is.
 - [ ] **Review / Sign-off Required** agrees with the Recommended Sign-off line
       in `SecurityAssessment.md`. If that file says CSO review is required and
       the box is unchecked, that's a failure; the reverse needs a stated reason.
@@ -130,15 +151,16 @@ information for the reader is a placeholder even if it isn't on this list.
 ## On failure
 
 Fix the ticket and re-run the affected items — don't note the gap and move on,
-and don't hand a failing draft to Step 7 with an apology attached. The scrutiny
+and don't hand a failing draft to Step 8 with an apology attached. The scrutiny
 subagent's value comes from reviewing a structurally complete artifact; giving
 it a draft with known holes wastes the pass on findings you already knew about.
 
 ## What this doesn't do
 
-Everything here is mechanical: is the heading there, is it one of the nine, is
+Everything here is mechanical: is the heading there, is it one of the eight, is
 the placeholder gone. None of it judges whether the ticket is *correct* —
 whether the acceptance criteria match the ask, whether the plan is achievable,
-whether the security assessment reached the right conclusion. That's Step 7's
-job, and it's done by a subagent that didn't draft the ticket precisely because
-this check couldn't be trusted to do it.
+whether a stated assumption is a reasonable one to build on, whether the
+security assessment reached the right conclusion. That's Step 8's job, and it's
+done by a subagent that didn't draft the ticket precisely because this check
+couldn't be trusted to do it.

@@ -26,6 +26,8 @@ Adapted from the **deslop** skill ([github.com/stephenturner/skill-deslop](https
 
 **10. Don't write around a section you have nothing for.** If Risks / Unknowns has one real unknown, that's one bullet, not three padded to look considered. "N/A" with a reason beats a paragraph that says nothing, and both beat a new heading invented to give the thin content somewhere better to live.
 
+**11. Write unknowns as a position, not a worry.** Every surviving bullet in Risks / Unknowns states what the ticket assumes, so it reads as a decision made under uncertainty rather than a note that someone was uneasy. "Unclear how refunds interact with this" is a worry. "The refund path is assumed unaffected; nobody on the payments side could confirm it this week" is a position someone can build against and later prove wrong.
+
 ## Quick pre-submit checks
 
 Run through these before finalizing the ticket:
@@ -38,8 +40,10 @@ Run through these before finalizing the ticket:
 - A vague declarative anywhere ("this has important implications")? Name the specific implication or cut the sentence.
 - A section that just restates the User Story in different words? Cut the restatement, add real information instead.
 - Bold-first bullets used purely for visual rhythm rather than to flag a genuinely scannable keyword? Remove the bold. (Acceptance Criteria group labels are structural, not decoration — they stay.)
-- Any heading that isn't one of the nine in the template, or any `###` at all? Fold the content into the section it belongs under, or cut it.
+- Any heading that isn't one of the eight in the template, or any `###` at all? Fold the content into the section it belongs under, or cut it.
 - A sentence about repository scope on a change contained to one repo? Cut it — silence is the correct output there.
+- A Risks / Unknowns bullet with no `**Assumption:**` on it? Either it was answered and should be folded into the section it belongs in, or it still needs an assumption written with the user.
+- An assumption too vague to build against ("assume sensible defaults")? Name the specific thing being assumed.
 
 ## What's different from the source material
 
