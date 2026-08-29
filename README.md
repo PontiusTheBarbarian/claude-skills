@@ -11,6 +11,7 @@ A personal [Claude Code](https://claude.com/claude-code) plugin marketplace.
 | [devops](plugins/devops/) | 5 | Azure Bicep infrastructure, GitHub Actions CI/CD, Docker, Debian administration, and secrets/.gitignore hygiene. |
 | [rust](plugins/rust/) | 2 | Rust coding conventions and application architecture skills, including async design and multi-crate workspaces. |
 | [practices](plugins/practices/) | 1 | Cross-project working practices for coding agents, starting with the Memory Bank persistent-context pattern. |
+| [documentation](plugins/documentation/) | 1 | Project documentation skills, starting with an interactive README author that grounds every section in what the repository actually contains. |
 
 ## Installation
 
@@ -29,7 +30,8 @@ A personal [Claude Code](https://claude.com/claude-code) plugin marketplace.
    /plugin install web-frontend@claude-skills
    /plugin install devops@claude-skills
    /plugin install rust@claude-skills
-   /plugin install workflow@claude-skills
+   /plugin install practices@claude-skills
+   /plugin install documentation@claude-skills
    ```
 4. Restart Claude Code so the plugin loads.
 5. Check what you got:

@@ -1,6 +1,6 @@
 {
   "name": "practices",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Cross-project working practices for coding agents, starting with the Memory Bank persistent-context pattern.",
   "author": {
     "name": "Liam Appleyard"

@@ -1,0 +1,14 @@
+{
+  "name": "documentation",
+  "version": "0.1.0",
+  "description": "Skills for writing project documentation, starting with an interactive README author that grounds every section in what the repository actually contains.",
+  "author": {
+    "name": "Liam Appleyard"
+  },
+  "keywords": [
+    "documentation",
+    "readme",
+    "docs",
+    "writing"
+  ]
+}
