@@ -11,7 +11,7 @@ A personal [Claude Code](https://claude.com/claude-code) plugin marketplace.
 | [devops](plugins/devops/) | 5 | Azure Bicep infrastructure, GitHub Actions CI/CD, Docker, Debian administration, and secrets/.gitignore hygiene. |
 | [rust](plugins/rust/) | 2 | Rust coding conventions and application architecture skills, including async design and multi-crate workspaces. |
 | [practices](plugins/practices/) | 1 | Cross-project working practices for coding agents, starting with the Memory Bank persistent-context pattern. |
-| [documentation](plugins/documentation/) | 1 | Project documentation skills, starting with an interactive README author that grounds every section in what the repository actually contains. |
+| [documentation](plugins/documentation/) | 2 | Project documentation skills: an interactive README author, and a deterministic engineering-ticket author with built-in security and scrutiny review passes. |
 
 ## Installation
 
@@ -58,6 +58,10 @@ plugins/
     skills/
       <skill-name>/
         SKILL.md            # a skill (frontmatter + instructions)
+        references/         # detail SKILL.md loads on demand
+        scripts/            # helper scripts the skill runs
+        assets/             # config or templates the skill reads
+        agents/             # subagent prompts the skill spawns (see below)
     agents/
       <agent-name>.md       # a subagent definition
     commands/
@@ -142,6 +146,25 @@ Instructions for Claude go here.
 
 The `description` is what Claude reads to decide whether to load the skill, so
 write it as a *trigger* ("Use when ..."), not as a summary.
+
+### Supporting files
+
+`SKILL.md` is loaded in full whenever the skill triggers, so keep it to the
+workflow and push the detail into sibling folders that it reads at the point of
+need. `plugins/documentation/skills/ticket-creator/` uses three of these:
+
+| Folder | For |
+|--------|-----|
+| `references/` | Templates, checklists and rules read mid-workflow. Fixing a format here rather than in `SKILL.md` is what makes output reproducible across sessions. |
+| `scripts/` | Executable helpers, when a check is genuinely mechanical and worth a runtime dependency. Invoke by absolute path (`"${CLAUDE_PLUGIN_ROOT}/skills/<name>/scripts/x.py"`) - a shell command runs in the *user's* repo, so a bare relative path won't resolve. |
+| `assets/` | Config or data the skill reads - including files the *installer* is expected to edit. |
+| `agents/` | System prompts the skill hands to a subagent it spawns. |
+
+A skill-level `agents/` folder is **not** the same as the plugin-level one.
+Claude Code only discovers `plugins/<name>/agents/`, so prompts under
+`skills/<name>/agents/` never show up in `/agents` - they are ordinary markdown
+that the skill reads and passes to a subagent, which is usually what you want
+for a reviewer that only makes sense inside one workflow.
 
 ## Adding a command
 

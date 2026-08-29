@@ -1,0 +1,78 @@
+# Skills Required config
+#
+# Each entry maps a skill to the condition under which a ticket requires it.
+# Step 6 of the ticket-creator workflow evaluates every `trigger` against the
+# drafted ticket's actual content (semantically — these are natural-language
+# conditions, not code) and records the verdict in the ticket's "Skills Required"
+# section, with a one-line justification either way.
+#
+# This ships populated with the skills in the claude-skills marketplace, so it
+# works as-is if that's what you have installed. It is still meant to be edited:
+# delete the plugins you don't use, and add your team's own skills. Entries are
+# cheap to remove and the file is the only thing controlling how long the ticket's
+# Skills Required section gets.
+#
+# Schema:
+#   - name: <skill name, as you'd invoke it — plugin-qualified for plugin skills>
+#     trigger: <plain-language condition for when this skill must be used>
+
+skills:
+
+  # --- .NET / backend ------------------------------------------------------
+  - name: dotnet:csharp
+    trigger: "The ticket involves writing or changing C# code."
+
+  - name: dotnet:dotnet-clean-architecture
+    trigger: "The ticket adds or changes .NET domain models, business logic, or the structure of a solution or project."
+
+  - name: dotnet:dotnet-architecture-good-practices
+    trigger: "The ticket introduces a new bounded context or aggregate, or makes a .NET architectural decision spanning more than one service."
+
+  - name: dotnet:dotnet-rest-api-design
+    trigger: "The ticket adds, removes, or changes an ASP.NET Core endpoint, a request/response contract, or HTTP status-code behaviour."
+
+  - name: dotnet:oop-design-patterns
+    trigger: "The ticket introduces a new abstraction, refactors a class hierarchy, or the implementation plan names a design pattern by name."
+
+  # --- Frontend ------------------------------------------------------------
+  - name: web-frontend:vue-component-standards
+    trigger: "The ticket creates or changes a Vue component, composable, or Pinia store."
+
+  - name: web-frontend:web-accessibility-review
+    trigger: "The ticket changes user-facing UI — a page, a form, or an interactive component."
+
+  - name: web-frontend:web-accessibility
+    trigger: "The ticket introduces a UI pattern needing a WCAG 2.2 AA reference implementation (modal, menu, custom control), or must satisfy a stated legal accessibility obligation."
+
+  - name: web-frontend:performance-optimisation
+    trigger: "The ticket affects page load, render behaviour, bundle size, or any Core Web Vital (LCP, INP, CLS)."
+
+  # --- Infrastructure and delivery ----------------------------------------
+  - name: devops:azure-bicep-deploy
+    trigger: "The ticket requires new or changed Azure infrastructure."
+
+  - name: devops:github-actions-cicd
+    trigger: "The ticket requires a new or changed CI/CD workflow, build step, or deployment step."
+
+  - name: devops:docker-development
+    trigger: "The ticket changes a Dockerfile, a docker-compose.yml, or how the application runs inside a container."
+
+  - name: devops:debian-linux
+    trigger: "The ticket involves Debian/Ubuntu host administration, apt packages, or system service configuration."
+
+  - name: devops:secrets-and-gitignore-hygiene
+    trigger: "The ticket introduces or moves a configuration value, connection string, API key, or credential — or the Security Assessment marked Sensitive Data Exposure as Applicable."
+
+  # --- Rust ----------------------------------------------------------------
+  - name: rust:rust
+    trigger: "The ticket involves writing or changing Rust code."
+
+  - name: rust:rust-architect
+    trigger: "The ticket designs a new Rust application, a crate or workspace layout, or an async execution model."
+
+  # --- Working practices and docs -----------------------------------------
+  - name: practices:memory-bank
+    trigger: "The ticket is part of long-running work whose context needs to survive across separate sessions."
+
+  - name: documentation:readme-creator
+    trigger: "The Documentation Requirements section calls for a new or substantially rewritten README."

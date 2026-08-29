@@ -74,13 +74,15 @@
     {
       "name": "documentation",
       "source": "./plugins/documentation",
-      "description": "Skills for writing project documentation, starting with an interactive README author that grounds every section in what the repository actually contains.",
+      "description": "Skills for writing project documentation: an interactive README author, and a deterministic engineering-ticket author with built-in security and scrutiny review passes.",
       "category": "productivity",
       "keywords": [
         "documentation",
         "readme",
         "docs",
-        "writing"
+        "writing",
+        "tickets",
+        "planning"
       ]
     }
   ]
