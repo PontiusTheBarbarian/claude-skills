@@ -22,6 +22,10 @@ Adapted from the **deslop** skill ([github.com/stephenturner/skill-deslop](https
 
 **8. Don't dilute.** One point per section, stated once. Don't restate the same acceptance criterion three ways across three bullets. Don't stack analogies or historical comparisons for false authority — a ticket doesn't need rhetorical weight, it needs to be correct and checkable.
 
+**9. Stay inside the template.** The ticket's headings are a closed set, fixed by `references/ticket-template.md`. Content that doesn't fit one of them gets folded into the nearest section as a sentence or two, or cut — and cut is the more common right answer. A new heading always feels like added rigour and almost never is: it moves work the reader didn't ask for into a document they're trying to skim. Background, alternatives considered, rollout notes, glossaries, links for later: fold or cut.
+
+**10. Don't write around a section you have nothing for.** If Risks / Unknowns has one real unknown, that's one bullet, not three padded to look considered. "N/A" with a reason beats a paragraph that says nothing, and both beat a new heading invented to give the thin content somewhere better to live.
+
 ## Quick pre-submit checks
 
 Run through these before finalizing the ticket:
@@ -33,7 +37,9 @@ Run through these before finalizing the ticket:
 - Em dash anywhere? Remove it.
 - A vague declarative anywhere ("this has important implications")? Name the specific implication or cut the sentence.
 - A section that just restates the User Story in different words? Cut the restatement, add real information instead.
-- Bold-first bullets used purely for visual rhythm rather than to flag a genuinely scannable keyword? Remove the bold.
+- Bold-first bullets used purely for visual rhythm rather than to flag a genuinely scannable keyword? Remove the bold. (Acceptance Criteria group labels are structural, not decoration — they stay.)
+- Any heading that isn't one of the nine in the template, or any `###` at all? Fold the content into the section it belongs under, or cut it.
+- A sentence about repository scope on a change contained to one repo? Cut it — silence is the correct output there.
 
 ## What's different from the source material
 

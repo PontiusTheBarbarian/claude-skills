@@ -1,6 +1,6 @@
 # Artifact Security Review (subagent instructions)
 
-Adapted from [Consensys/repo-security-review](https://github.com/Consensys/repo-security-review)'s `--pr` diff-scoped review mode (free, MIT-compatible, uses only free CLI tools). That skill reviews a git diff without needing a full-repo scan first; this version applies the same *scoped, single-pass, isolated-judgment* structure to reviewing **`Ticket.md` and `ImplementationPlan.md`** — because at ticket-creation time there usually isn't a diff yet, just a description of a change. This runs as Step 5 in `SKILL.md`, after the ticket/plan are drafted, and its output is written into the ticket's Security Assessment section.
+Adapted from [Consensys/repo-security-review](https://github.com/Consensys/repo-security-review)'s `--pr` diff-scoped review mode (free, MIT-compatible, uses only free CLI tools). That skill reviews a git diff without needing a full-repo scan first; this version applies the same *scoped, single-pass, isolated-judgment* structure to reviewing **`Ticket.md` and `ImplementationPlan.md`** — because at ticket-creation time there usually isn't a diff yet, just a description of a change. This runs as Step 5 in `SKILL.md`, after the ticket/plan are drafted, and its output becomes a standalone `SecurityAssessment.md` written next to the ticket.
 
 **This is a design-time review, not a code scan.** It cannot catch bugs in code that doesn't exist yet — it evaluates whether the *described* approach, as written, would introduce known vulnerability classes, and whether the plan omits security work the described change would need. Say so explicitly in the report's confidence framing (mirroring the source skill's own "Confidence and Scope Disclaimers" practice) — don't let the report imply a depth of coverage it doesn't have.
 
@@ -14,7 +14,7 @@ Adapted from [Consensys/repo-security-review](https://github.com/Consensys/repo-
 
 ### Step 0: Identify what's actually being reviewed
 
-Read `Ticket.md`'s Description, Technical Instructions, and Cross-Repo Scope sections, plus `ImplementationPlan.md`'s Affected Areas if it exists. Extract: what files/modules/services the change touches (as named, not guessed), what kind of change this is (new endpoint, data model change, dependency add, config change, etc.), and whether any of it is genuinely undetermined ("approach TBD" in the plan) — undetermined items get a **Cannot Assess** note, not a guess.
+Read `Ticket.md`'s Description and Technical Instructions sections, plus `ImplementationPlan.md`'s Affected Areas if it exists. Extract: what files/modules/services the change touches (as named, not guessed), what kind of change this is (new endpoint, data model change, dependency add, config change, etc.), and whether any of it is genuinely undetermined ("approach TBD" in the plan) — undetermined items get a **Cannot Assess** note, not a guess.
 
 ### Step 1: Cheap structural context
 
@@ -41,30 +41,28 @@ Before finalizing, re-read each flagged item against the artifact text one more 
 
 ### Step 6: Write the report
 
-Output in this format:
+Write the file exactly as specified under "Where the assessment goes" in
+`references/security-checklist.md` — the title and back-link, the checklist
+table, and only those of Findings / Cannot Assess / Recommended Sign-off that
+have real content. Omit an empty heading rather than writing "None" under it.
 
-```
-## Artifact Security Review
+This is a standalone document that a reader opens without the ticket in front of
+them, so write it as a document, not as a message reporting back to whoever ran
+the review. Nothing in it is pasted into the ticket.
 
-**Scope:** Design-time review of Ticket.md [+ ImplementationPlan.md]. Not a code scan — no code exists yet for most of what's described here.
+Two outputs matter to the orchestrating skill and should be unambiguous in the
+file:
 
-### OWASP-style Checklist
-[Each item: Applicable / Not Applicable, one-line reason, tied to what in the ticket makes it so.]
-
-### Description-Level Findings
-[Pattern-level risks found in Step 4, each with: what was found, where (which section/line of which file), why it matters, suggested mitigation.]
-
-### Cannot Assess
-[Anything genuinely undetermined in the plan that blocks a real assessment — e.g. "approach TBD" for the auth mechanism.]
-
-### Recommended Sign-off
-[Yes/No on whether CSO review should be required, per the threshold rule in security-checklist.md, with the specific findings driving that recommendation.]
-```
-
-This output gets pasted into `Ticket.md`'s Security Assessment section by the orchestrating skill (see `SKILL.md` Step 5) — write it so it reads correctly standalone there, not as a message to a person running the review.
+- **Recommended Sign-off** — a plain Yes or No on CSO review, per the threshold
+  rule in `security-checklist.md`, naming the items that drive it.
+- **Findings that the ticket must act on** — state each as the requirement it
+  implies ("the endpoint needs a per-user rate limit"), not as a critique of the
+  ticket's wording, so it can become an acceptance criterion or a risk bullet
+  without rewriting.
 
 ## What NOT to Do
 
 - Don't scan the whole repository. If Step 2's scoped greps don't answer a question, note it as a limitation rather than expanding scope — that's the entire point of adapting the diff-scoped mode instead of the full pipeline.
 - Don't invent code-level findings ("this function has a SQL injection vulnerability") when no code exists yet — findings must be about the *described approach*, worded as design-time risk, not as a confirmed code defect.
 - Don't skip Step 5. A finding that isn't re-validated against the full artifact text is exactly the kind of confident-but-wrong finder output the isolation step exists to catch.
+- Don't propose new ticket sections. If a finding needs to reach the ticket, it lands as an acceptance criterion or a Risks / Unknowns bullet under the headings that already exist. The ticket's section list is closed (see `references/ticket-template.md`).

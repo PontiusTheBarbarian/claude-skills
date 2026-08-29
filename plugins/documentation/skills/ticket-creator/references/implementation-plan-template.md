@@ -12,7 +12,7 @@ This file is written for an agent (or a developer) to execute against, not for a
 
 ## Affected Areas
 - [Repo/package/service] — [file or module paths, as concretely as known]
-(If Cross-Repo Scope in the ticket is Yes, list every affected repo here explicitly.)
+(If the scope detection found cross-repo work, list every affected repo here explicitly. The ticket carries one sentence about it; the concrete detail belongs here.)
 
 ## Steps
 1. [Concrete, ordered, executable step. Reference exact files/functions where known.]
@@ -33,4 +33,5 @@ Each step should be small enough that "done" is unambiguous. If a step is genuin
 ## Notes
 
 - Don't restate the User Story, Description, or Acceptance Criteria here — link to the ticket instead. Duplication is where these two documents drift out of sync.
-- If the scope detection (Step 3 in SKILL.md) found cross-repo impact, this file must enumerate the other repo(s) and what changes there — don't leave it implicit.
+- If the scope detection (Step 3 in SKILL.md) found cross-repo impact, this file must enumerate the other repo(s) and what changes there — don't leave it implicit. This is the only place that detail is written down, since the ticket keeps it to a sentence.
+- The plan's headings are fixed the same way the ticket's are. Add a step, not a section.

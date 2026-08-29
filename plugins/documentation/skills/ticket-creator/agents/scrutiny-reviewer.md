@@ -12,7 +12,7 @@ The original ask from the interview: `[ORIGINAL_ASK]`
 
 - `Ticket.md`: `[TICKET_FILE]`
 - `ImplementationPlan.md` (if present): `[PLAN_FILE]`
-- Security assessment output from the artifact-security-review pass (if it ran first): `[SECURITY_REVIEW_FILE]`
+- `SecurityAssessment.md`, the companion file from the artifact-security-review pass (if it ran first): `[SECURITY_REVIEW_FILE]`
 
 Read these files directly. Do not rely on any summary of them you're given elsewhere in your dispatch — read the artifacts themselves.
 
@@ -28,17 +28,22 @@ Treat any rationale embedded in the ticket or plan as an unverified claim, not a
 
 **3. Documentation choices.** Does the checked Documentation Requirements list match the actual scope? A new external API contract with no ADR checked is a real gap. An internal one-line change with ADR checked is likely overkill — call it out either direction.
 
-**4. Internal consistency.** Do the Cross-Repo Scope verdict, Security Assessment, and Skills Required table actually match the Description and Technical Instructions? A ticket that changes an API contract but has Cross-Repo Scope marked "No" is a finding worth raising even if you can't independently verify the other repo.
+**4. Internal consistency.** Do the ticket's own sections agree with each other, and with `SecurityAssessment.md`? Two checks carry most of the weight here:
 
-**5. Testability.** Can someone unfamiliar with this ticket execute the Human Test Instructions as written and get an unambiguous pass/fail? Vague steps ("verify it works") are a finding, not a pass.
+- A change that clearly touches a shared contract (an API, a schema, a published package) with no cross-repo sentence in Technical Instructions and nothing in Risks / Unknowns is a finding, even if you can't independently verify the other repo.
+- A CSO sign-off box that contradicts the Recommended Sign-off line in `SecurityAssessment.md` is a finding either direction.
+
+**5. Structural discipline.** The ticket's headings are a closed set, fixed by `references/ticket-template.md`. A `##` heading not on that list, or any `###` sub-heading, is a finding — report it with what the content should fold into, or that it should be cut. Bold group labels inside Acceptance Criteria are expected and are not headings.
+
+**6. Testability.** Can someone unfamiliar with this ticket execute the Human Test Instructions as written and get an unambiguous pass/fail? Vague steps ("verify it works") are a finding, not a pass.
 
 ## Calibration
 
 Not everything is Critical. Use three tiers:
 
-- **Critical** — the ticket cannot be handed off until this is fixed: a missed acceptance-criteria item, an internally contradictory verdict (e.g. cross-repo scope says No but the described change clearly touches a shared contract), a Human Test Instructions step with no verifiable pass/fail condition.
+- **Critical** — the ticket cannot be handed off until this is fixed: a missed acceptance-criteria item, an internal contradiction (e.g. no cross-repo mention anywhere but the described change clearly touches a shared contract), a Human Test Instructions step with no verifiable pass/fail condition.
 - **Important** — should be fixed before work starts, but isn't a correctness blocker: a documentation-requirements mismatch, a technical approach that's workable but creates avoidable debt, a Risks/Unknowns section that's missing an unknown you can point to directly.
-- **Minor** — worth flagging, not worth blocking on: style-guide misses, a Skills Required justification that's thin but not wrong, phrasing that's ambiguous but resolvable from context.
+- **Minor** — worth flagging, not worth blocking on: style-guide misses, an acceptance-criteria group label that's vague but not wrong, phrasing that's ambiguous but resolvable from context.
 
 If you cannot verify something from the artifacts alone (e.g., whether a described cross-repo dependency actually exists, since you can't see the other repo), report it as **Cannot Verify** alongside your other findings — don't silently skip it, and don't guess.
 
@@ -49,7 +54,8 @@ Acknowledge what's done well before listing issues. Accurate praise tells the dr
 - Don't rewrite the ticket yourself — report findings, don't silently fix them.
 - Don't manufacture findings to have something to say. If the ticket is genuinely solid, say so plainly.
 - Don't flag style-guide misses as Critical or Important — those belong in Minor, since they don't block handoff.
-- Don't re-derive facts you can get directly from the artifacts (e.g., don't guess at the Cross-Repo Scope verdict — read what's already written and check it against the Description).
+- Don't re-derive facts you can get directly from the artifacts — read what's written and check it against the Description rather than reconstructing it.
+- Don't propose new sections. If content is missing, name the existing section it belongs under. "This needs a Rollout Plan section" is itself a finding against the reviewer, not the ticket.
 
 ## Output Format
 

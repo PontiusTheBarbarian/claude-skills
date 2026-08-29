@@ -1,6 +1,6 @@
 {
   "name": "documentation",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Skills for writing project documentation: an interactive README author, and a deterministic engineering-ticket author with built-in security and scrutiny review passes.",
   "author": {
     "name": "Liam Appleyard"

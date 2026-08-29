@@ -17,3 +17,43 @@ This list is deliberately fixed so the same change gets the same checklist treat
 11. **Rate Limiting / Abuse Potential** — Could this change be abused via automation, scraping, or high-volume misuse if unthrottled?
 
 If 3 or more items are Applicable, or any of Injection / Authentication / Authorization / Sensitive Data Exposure are Applicable, the "Cyber Security Officer (CSO)" box in Review/Sign-off should default to checked — override only with an explicit reason.
+
+## Where the assessment goes
+
+The assessment is a companion file, `SecurityAssessment.md`, written next to
+`Ticket.md`. It is not a ticket section — the full checklist ran to eleven
+Applicable/Not Applicable lines in every ticket regardless of the change, which
+buried the sections a reader actually needed.
+
+The file is a standalone document, so it repeats the ticket title and links back
+to it rather than assuming the reader has the ticket open:
+
+```markdown
+# Security Assessment: [Ticket Title]
+
+**Ticket:** [./Ticket.md](./Ticket.md)
+**Scope:** Design-time review of the ticket and implementation plan. Not a code scan.
+
+## Checklist
+| # | Item | Verdict | Reason |
+|---|---|---|---|
+| 1 | Injection | Not Applicable | No user input reaches a query or interpreter; the change is read-only over a fixed enum. |
+
+## Findings
+[Only if there are any. Each: what was found, where in the ticket or plan, why it matters, suggested mitigation.]
+
+## Cannot Assess
+[Only if there is anything genuinely undetermined. Omit the heading otherwise.]
+
+## Recommended Sign-off
+CSO review required: Yes / No — [the specific items driving the recommendation].
+```
+
+Two things cross back into the ticket, and nothing else:
+
+- The **Recommended Sign-off** outcome decides whether the Cyber Security Officer
+  box is checked under Review / Sign-off.
+- A finding the ticket has to act on becomes ordinary ticket content — an
+  acceptance criterion, or a bullet in Risks / Unknowns. It goes in as the
+  requirement itself, not as a quote from the assessment, and it does not get a
+  new heading.
